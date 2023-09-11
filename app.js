@@ -7,26 +7,34 @@ const Person = require('./userModel');
 
 app.use(bodyParser.json());
 
-// Create (POST)
-// Create (POST)
+
 let nextUserId = 1; // Initialize the next user_id
 
+
+// endpoint to retrieve all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await Person.find();
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching all users:', error);
+    res.status(500).json({ error: 'Error fetching all users' });
+  }
+});
+
 // Create (POST)
-app.post('/api', async (req, res) => {
+app.post('/api/users', async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) {
       return res.status(400).json({ error: 'Name is required' });
     }
 
-    // Calculate the new user_id
     const user_id = nextUserId;
 
-    // Increment nextUserId for the next user
     nextUserId++;
 
-    // Create the new user with the calculated user_id and name
-    const person = new Person({ user_id, name }); // Ensure 'name' is not null or empty
+    const person = new Person({ user_id, name }); 
     const savedPerson = await person.save();
 
     res.status(201).json(savedPerson);
@@ -38,12 +46,10 @@ app.post('/api', async (req, res) => {
 
   
 
-// Read (GET)
-// Read (GET) by user_id
-app.get('/api/:user_id', async (req, res) => {
+app.get('/api/users/:user_id', async (req, res) => {
   try {
     const user_id = req.params.user_id;
-    const person = await Person.findOne({ user_id }); // Use findOne with user_id
+    const person = await Person.findOne({ user_id });
     if (!person) {
       return res.status(404).json({ error: 'Person not found' });
     }
@@ -54,17 +60,15 @@ app.get('/api/:user_id', async (req, res) => {
   }
 });
 
-// Update (PUT)
-// Update (PUT)
-app.put('/api/:user_id', async (req, res) => {
+
+app.put('/api/users/:user_id', async (req, res) => {
   try {
-    const user_id = req.params.user_id; // Get user_id from the URL parameter
+    const user_id = req.params.user_id; 
     const { name } = req.body;
     if (!name) {
       return res.status(400).json({ error: 'Name is required' });
     }
 
-    // Find the user by user_id and update the 'name' field
     const updatedUser = await Person.findOneAndUpdate(
       { user_id },
       { name },
@@ -82,10 +86,9 @@ app.put('/api/:user_id', async (req, res) => {
   }
 });
 
-// Delete (DELETE)
-app.delete('/api/:user_id', async (req, res) => {
+app.delete('/api/users/:user_id', async (req, res) => {
   try {
-    const user_id = req.params.user_id; // Corrected from id to user_id
+    const user_id = req.params.user_id; 
     const person = await Person.findOneAndRemove({ user_id });
     if (!person) {
       return res.status(404).json({ error: 'Person not found' });
