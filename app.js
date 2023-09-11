@@ -3,15 +3,13 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3000;
 const connect = require('./conn.js');
-const Person = require('./userModel'); 
+const Person = require('./userModel');
 
 app.use(bodyParser.json());
 
-
 let nextUserId = 1; // Initialize the next user_id
 
-
-// endpoint to retrieve all users
+// Endpoint to retrieve all users
 app.get('/api/users', async (req, res) => {
   try {
     const users = await Person.find();
@@ -26,15 +24,15 @@ app.get('/api/users', async (req, res) => {
 app.post('/api/users', async (req, res) => {
   try {
     const { name } = req.body;
-    if (!name) {
-      return res.status(400).json({ error: 'Name is required' });
+    if (typeof name !== 'string') {
+      return res.status(400).json({ error: 'Name must be a string' });
     }
 
     const user_id = nextUserId;
 
     nextUserId++;
 
-    const person = new Person({ user_id, name }); 
+    const person = new Person({ user_id, name });
     const savedPerson = await person.save();
 
     res.status(201).json(savedPerson);
@@ -44,15 +42,18 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
-  
-
-app.get('/api/users/:user_id', async (req, res) => {
+// Retrieve user by ID or name (GET)
+app.get('/api/users/:identifier', async (req, res) => {
   try {
-    const user_id = req.params.user_id;
-    const person = await Person.findOne({ user_id });
+    const identifier = req.params.identifier;
+    const filter = isNaN(identifier) ? { name: identifier } : { user_id: identifier };
+
+    const person = await Person.findOne(filter);
+
     if (!person) {
       return res.status(404).json({ error: 'Person not found' });
     }
+
     res.json(person);
   } catch (error) {
     console.error('Error fetching person:', error);
@@ -60,20 +61,19 @@ app.get('/api/users/:user_id', async (req, res) => {
   }
 });
 
-
-app.put('/api/users/:user_id', async (req, res) => {
+// Update user by ID or name (PUT)
+app.put('/api/users/:identifier', async (req, res) => {
   try {
-    const user_id = req.params.user_id; 
+    const identifier = req.params.identifier;
     const { name } = req.body;
-    if (!name) {
-      return res.status(400).json({ error: 'Name is required' });
+    
+    if (typeof name !== 'string') {
+      return res.status(400).json({ error: 'Name must be a string' });
     }
 
-    const updatedUser = await Person.findOneAndUpdate(
-      { user_id },
-      { name },
-      { new: true }
-    );
+    const filter = isNaN(identifier) ? { name: identifier } : { user_id: identifier };
+
+    const updatedUser = await Person.findOneAndUpdate(filter, { name }, { new: true });
 
     if (!updatedUser) {
       return res.status(404).json({ error: 'User not found' });
@@ -86,13 +86,19 @@ app.put('/api/users/:user_id', async (req, res) => {
   }
 });
 
-app.delete('/api/users/:user_id', async (req, res) => {
+// Delete user by ID or name (DELETE)
+app.delete('/api/users/:identifier', async (req, res) => {
   try {
-    const user_id = req.params.user_id; 
-    const person = await Person.findOneAndRemove({ user_id });
+    const identifier = req.params.identifier;
+
+    const filter = isNaN(identifier) ? { name: identifier } : { user_id: identifier };
+
+    const person = await Person.findOneAndRemove(filter);
+
     if (!person) {
       return res.status(404).json({ error: 'Person not found' });
     }
+
     res.json(person);
   } catch (error) {
     console.error('Error deleting person:', error);
