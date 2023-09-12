@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 let nextUserId = 1; // Initialize the next user_id
 
 // Endpoint to retrieve all users
-app.get('/api/users', async (req, res) => {
+app.get('/api', async (req, res) => {
   try {
     const users = await Person.find();
     res.json(users);
@@ -21,7 +21,7 @@ app.get('/api/users', async (req, res) => {
 });
 
 // Create (POST)
-app.post('/api/users', async (req, res) => {
+app.post('/api', async (req, res) => {
   try {
     const { name } = req.body;
     if (typeof name !== 'string') {
@@ -43,7 +43,7 @@ app.post('/api/users', async (req, res) => {
 });
 
 // Retrieve user by ID or name (GET)
-app.get('/api/users/:identifier', async (req, res) => {
+app.get('/api/:identifier', async (req, res) => {
   try {
     const identifier = req.params.identifier;
     const filter = isNaN(identifier) ? { name: identifier } : { user_id: identifier };
@@ -62,7 +62,7 @@ app.get('/api/users/:identifier', async (req, res) => {
 });
 
 // Update user by ID or name (PUT)
-app.put('/api/users/:identifier', async (req, res) => {
+app.put('/api/:identifier', async (req, res) => {
   try {
     const identifier = req.params.identifier;
     const { name } = req.body;
@@ -87,7 +87,7 @@ app.put('/api/users/:identifier', async (req, res) => {
 });
 
 // Delete user by ID or name (DELETE)
-app.delete('/api/users/:identifier', async (req, res) => {
+app.delete('/api/:identifier', async (req, res) => {
   try {
     const identifier = req.params.identifier;
 
