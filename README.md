@@ -83,3 +83,6 @@ The database schema for the Workshop Users API includes the following fields:
 
 - `user_id` (Number): Unique user identifier.
 - `name` (String): User's name.
+
+Database Modelling UML Link
+https://drive.google.com/file/d/1Oq8Cej6f6cfR6tg8iyx4_R174YSsEsrN/view?usp=drive_link
