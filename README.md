@@ -34,21 +34,21 @@ To use the Workshop Users API, follow the guidelines below.
 
 The Users API provides the following endpoints:
 
-- `GET /api/users`: Retrieve a list of all users.
-- `POST /api/users`: Create a new user.
-- `GET /api/users/:id`: Retrieve a user by ID.
-- `PUT /api/users/:id`: Update a user by ID.
-- `DELETE /api/users/:id`: Delete a user by ID.
+- `GET /api`: Retrieve a list of all users.
+- `POST /api`: Create a new user.
+- `GET /api/user_id`: Retrieve a user by ID.
+- `PUT /api/user_id`: Update a user by ID.
+- `DELETE /api/user_id`: Delete a user by ID.
 
-1. **GET /api/users**: Retrieve a list of all users.
+1. **GET /api**: Retrieve a list of all users.
 
    - Method: GET
-   - URL: `https://stagetwo-km36.onrender.com/api/users`
+   - URL: `https://stagetwo-km36.onrender.com/api
 
-2. **POST /api/users**: Create a new user.
+2. **POST /api**: Create a new user.
 
    - Method: POST
-   - URL: `https://stagetwo-km36.onrender.com/api/users`
+   - URL: `https://stagetwo-km36.onrender.com/api`
    - Body (JSON):
      ```json
      {
@@ -56,15 +56,15 @@ The Users API provides the following endpoints:
      }
      ```
 
-3. **GET /api/users/:user_id**: Retrieve a user by ID.
+3. **GET /api/user_id**: Retrieve a user by ID.
 
    - Method: GET
-   - URL: Replace `:id` with the actual user ID, for example, ``https://stagetwo-km36.onrender.com/api/users/1`
+   - URL: Replace `:id` with the actual user ID, for example, ``https://stagetwo-km36.onrender.com/api/1`
 
-4. **PUT /api/users/:user_id**: Update a user by ID.
+4. **PUT /api/user_id**: Update a user by ID.
 
    - Method: PUT
-   - URL: Replace `:id` with the actual user ID, for example, `https://stagetwo-km36.onrender.com/api/users/2`
+   - URL: Replace `:id` with the actual user ID, for example, `https://stagetwo-km36.onrender.com/api/2`
    - Body (JSON):
      ```json
      {
@@ -72,10 +72,10 @@ The Users API provides the following endpoints:
      }
      ```
 
-5. **DELETE /api/users/:user_id**: Delete a user by ID.
+5. **DELETE /api/user_id**: Delete a user by ID.
 
    - Method: DELETE
-   - URL: Replace `:id` with the actual user ID, for example, `https://stagetwo-km36.onrender.com/api/users/1`
+   - URL: Replace `:id` with the actual user ID, for example, `https://stagetwo-km36.onrender.com/api/1`
 
 ## Database Schema
 
